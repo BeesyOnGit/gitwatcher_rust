@@ -8,5 +8,6 @@
         "cp -r /home/gitwatcher_rust/portfolio/Serveur/dist/* /var/www/api.portfolio.com"
     ],
     "clear_folder": "/home/gitwatcher_rust/portfolio",
-    "repo": "https://github.com/BeesyOnGit/portfolio.git"
+    "repo": "https://github.com/BeesyOnGit/portfolio.git",
+    "interval_in_sec": "10"
 }

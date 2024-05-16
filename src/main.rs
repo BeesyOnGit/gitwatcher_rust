@@ -1,6 +1,4 @@
-use std::{process::{Command, Stdio}, str::FromStr};
-// use cron::Schedule;
-// use chrono::Utc;
+use std::process::Command;
 use std::fs;
 use serde::Deserialize;
 
@@ -14,23 +12,30 @@ async fn main() {
 
     let mut version = String::new();
     let mut runing_instance = false;
-    // let schedul = Schedule::from_str(" * * * * *").unwrap();
-    // for sc in schedul.upcoming(Utc){
-
-    // // }
 
     if let Ok(output) = execute( format!("git ls-remote {} main",get_config_file().await.unwrap().repo).to_string()).await {
         version = output.trim().split("refs").next().unwrap().to_string();
     }
     println!("{} : version initialized : {}", get_ts(),version);
+    
+    let interval_val:String = get_config_file().await.unwrap().interval_in_sec;
+    
+    if interval_val.is_empty() {
+
+        println!("{} : Please provide a value for 'interval_in_sec' in the config file it is required !", get_ts());
+        return ;
+    }
+
+    let interval_num = interval_val.parse().unwrap();
 
     // Schedule cron job
-    let mut interval = tokio::time::interval(tokio::time::Duration::from_secs(60));
+    let mut interval = tokio::time::interval(tokio::time::Duration::from_secs(interval_num));
+
     loop {
         interval.tick().await;
 
         if runing_instance {
-            continue; ;
+            continue; 
         }
 
         let mut currversion = String::new();
@@ -45,6 +50,7 @@ async fn main() {
         } 
 
         runing_instance =true;
+
         println!("{} : Repo Version Changed Starting Update", get_ts());
         
         if !build_and_setup().await {
@@ -61,10 +67,12 @@ async fn main() {
         if let Some(clear_folder) = get_config_file().await.unwrap().clear_folder {
             execute(format!("rm -rf {}", clear_folder)).await.ok();
         }
-        runing_instance=false;
-        version = currversion;
-        println!("{} : Updates Finished", get_ts());
 
+        runing_instance=false;
+
+        version = currversion;
+
+        println!("{} : Updates Finished", get_ts());
         continue; 
         
     }
@@ -171,10 +179,6 @@ struct Config {
     clear_folder: Option<String>,
     build: Option<Vec<String>>,
     mouve: Option<Vec<String>>,
+    interval_in_sec:String,
 }
 
-// #[derive(Debug, Deserialize)]
-// struct Folder {
-//     work_dir: Option<String>,
-//     cmd: Vec<String>,
-// }
