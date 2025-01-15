@@ -23,7 +23,7 @@ GitWatcher Rust (GwRB) is a lightweight and **FAST**, Rust-based tool designed t
    ```
    git clone https://github.com/BeesyOnGit/GwRB-linux.git
    cd GwRB-linux
-  ``
+   ```
 
 ### Set Up the Configuration File:
 Ensure the config.json file is in the same directory as the binary. Modify the config.json file to match your repository and deployment settings (see the Configuration section below).
@@ -31,11 +31,13 @@ Ensure the config.json file is in the same directory as the binary. Modify the c
 2. **Make the Binary Executable**:
 Grant execute permissions to the binary:
 
-```bash
+```
 chmod +x gitwatcher_rust
 ```
+
 3. **Run GitWatcher**:
 Start the application by running:
+
 ```
 ./gitwatcher_rust
 ```
@@ -46,7 +48,7 @@ GitWatcher uses a config.json file to define the repository, build commands, dep
 
 Example config.json
 
-```json
+```
 {
     "build": [
         "cd /home/gitwatcher_rust/project/Serveur && npm i && npm run build",
@@ -64,13 +66,13 @@ Example config.json
 Configuration Fields
 repo: The URL of the Git repository to monitor. Replace https://github.com/exampleuser/example-repo.git with your repository URL.
 
-*build**: A list of commands to execute for building the project.
+`build`: A list of commands to execute for building the project.
 
-*mouve**: A list of commands to execute for moving/deploying the built files.
+`mouve`: A list of commands to execute for moving/deploying the built files.
 
-*clear_folder*: The folder to clear before pulling new changes. This field is required.
+`clear_folder`: The folder to clear before pulling new changes. This field is required.
 
-*interval_in_sec*: The interval (in seconds) at which the repository is checked for updates.
+`interval_in_sec`: The interval (in seconds) at which the repository is checked for updates.
 
 ## Usage
 
@@ -79,6 +81,7 @@ Ensure the config.json file is in the same directory as the binary and configure
 
 2. **Run GitWatcher**:
 Start the application by running:
+
 ```
 ./gitwatcher_rust
 ```
